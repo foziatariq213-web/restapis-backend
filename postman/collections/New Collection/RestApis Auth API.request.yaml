@@ -1,0 +1,37 @@
+$kind: http-request
+url: http://localhost:8000/api/logout
+method: POST
+headers:
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+        "email": "test12345@test.com",
+        "password": "password123"
+       
+    }
+auth:
+  type: bearer
+  credentials:
+    token: 8|bGBzhY5xNJLQJcsOX78zNS8Jbwq67cQyI9iFeSVA6a1a2e86
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 422", function () {
+          pm.response.to.have.status(422);
+      });
+
+      pm.test("Response has error message", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("message");
+          pm.expect(jsonData.message).to.equal("The password field confirmation does not match.");
+      });
+
+      pm.test("Response has password error details", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("errors");
+          pm.expect(jsonData.errors).to.have.property("password");
+      });
+examples: .resources/RestApis Auth API.resources/examples
+order: 1788978274086
