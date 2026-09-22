@@ -1,0 +1,11 @@
+name: AI Production-Ready Review
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ai-review:
+    uses: foziatariq213-web/Momina-s-Bot/.github/workflows/claude-review.yml@main
+    secrets:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
